@@ -5,12 +5,11 @@ using eShopSolution.Ut.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using eShopSolution.ViewModel.Common;
 using eShopSolution.ViewModel.Catalog.Products;
-using eShopSolution.ViewModel.Catalog.Products.Manage;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http.Headers;
 using eShopSolution.Application.Common;
 
-namespace eShopSolution.Application.Catalog.Products.Dtos
+namespace eShopSolution.Application.Catalog.Products
 {
     public class ManageProductService : IManageProductService
     {
@@ -95,7 +94,7 @@ namespace eShopSolution.Application.Catalog.Products.Dtos
 
       
 
-        public async Task<PageResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request)
+        public async Task<PageResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request)
         {
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.Id equals pt.ProductId
@@ -133,6 +132,11 @@ namespace eShopSolution.Application.Catalog.Products.Dtos
                 Items = data
             };
             return pageResult;
+        }
+
+        public Task<PageResult<ProductViewModel>> GetAllPaging(GetPublicProductPagingRequest request)
+        {
+            throw new NotImplementedException();
         }
 
         public Task<List<ProductImageViewModel>> GetListImage(int productId)
