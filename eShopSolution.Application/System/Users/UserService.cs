@@ -6,6 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
+
 
 namespace eShopSolution.Application.System.Users
 {
@@ -23,7 +25,7 @@ namespace eShopSolution.Application.System.Users
             _roleManager = roleManager;
             _config = config;
         }
-        public async Task<string> Authencate(LoginRequest request)
+        public async Task<string> Authenticate(LoginRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
             if (user == null)
@@ -41,7 +43,7 @@ namespace eShopSolution.Application.System.Users
             {
                  new Claim(ClaimTypes.Email,user.Email),
                  new Claim(ClaimTypes.GivenName,user.FirstName),
-                 new Claim(ClaimTypes.Role,String.Join(";",roles))
+                 new Claim(ClaimTypes.Role,string.Join(";",roles))
              };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -55,6 +57,7 @@ namespace eShopSolution.Application.System.Users
                 
         }
 
+       
         public async Task<bool> Register(RegisterRequest request)
         {
             var user = new AppUser()

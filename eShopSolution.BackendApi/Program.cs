@@ -18,6 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers().AddFluentValidation();
 
+
 builder.Services.AddIdentity<AppUser,AppRole>()
 .AddEntityFrameworkStores<EShopDbContext>()
 .AddDefaultTokenProviders();
