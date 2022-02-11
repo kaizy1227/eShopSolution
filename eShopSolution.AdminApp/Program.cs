@@ -1,11 +1,22 @@
 using eShopSolution.AdminApp.Services;
+using eShopSolution.ViewModel.System.Users;
+using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpClient();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+{
+    options.LoginPath = "/User/Login/";
+    options.AccessDeniedPath = "/Account/Forbidden/";
+});
 // Add services to the container.
-builder.Services.AddControllersWithViews().AddFluentValidation();
+builder.Services.AddControllersWithViews()
+     .AddFluentValidation();
+builder.Services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
+builder.Services.AddTransient<IValidator<RegisterRequest>, RegisterRequestValidator>();
 builder.Services.AddTransient<IUserApiClient, UserApiClient>();
 
 IMvcBuilder mvcBuilder = builder.Services.AddRazorPages();
@@ -29,6 +40,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseAuthentication();
 
 app.UseRouting();
 

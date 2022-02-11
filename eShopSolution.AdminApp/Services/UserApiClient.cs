@@ -17,7 +17,7 @@ namespace eShopSolution.AdminApp.Services
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri("https://localhost:7043");
+            client.BaseAddress = new Uri("https://localhost:5001");
            var reponse = await client.PostAsync("/api/users/authenticate", httpContent);
             var token = await reponse.Content.ReadAsStringAsync();
             return token;
